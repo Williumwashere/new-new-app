@@ -9,6 +9,10 @@ import { Exercise } from "./types/types";
 export default function App() {
   const [search, setSearch] = useState<string>("");
 
+  const { data, isLoading } = useQuery(["exercises", search], query, {
+    enabled: Boolean(search),
+  });
+
   const query = async () =>
     axios.get<Exercise[]>(
       `https://api.api-ninjas.com/v1/caloriesburned?activity=${search}`,
@@ -16,10 +20,6 @@ export default function App() {
         headers: { "X-API-KEY": "lZOkNRcxcRbTIitJ2BjLKw==7ukbxScp64NxhMke" },
       }
     );
-
-  const { data, isLoading } = useQuery(["exercises", search], query, {
-    enabled: Boolean(search),
-  });
 
   const handleChange: SearchProps["onChange"] = (event) => {
     setSearch(event.target.value);
